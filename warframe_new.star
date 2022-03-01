@@ -43,13 +43,29 @@ def main():
         cache.set("wf_cetus_cached", str(cetus), ttl_seconds=60)
 
         earthactive = rep.json()["earthCycle"]["state"].title()
-        earthremaining = rep.json()["earthCycle"]["timeLeft"]
-        earth = "%s of %s" % (earthremaining, earthactive)
+        if earthactive == "Night":
+            earthactive == "Day"
+        else:
+            earthactive == "Night"
+        earthremaining = rep.json()["earthCycle"]["timeLeft"].split()
+        for part in earthremaining:
+            if part is search('s'):
+                earthremaining.remove(part)
+        earthremaining = earthremaining.join(' ')
+        earth = "%s to %s" % (earthremaining, earthactive)
         cache.set("wf_earth_cached", str(earth), ttl_seconds=60)
 
         cambionactive = rep.json()["cambionCycle"]["active"].title()
-        cambionremaining = rep.json()["cambionCycle"]["timeLeft"]
-        cambion = "%s of %s" % (cambionremaining, cambionactive)
+        if cambionactive == "Fass":
+            cambionactive == "Vome"
+        else:
+            cambionactive == "Fass"
+        cambionremaining = rep.json()["cambionCycle"]["timeLeft"].split()
+        for part in cambionremaining:
+            if part is search('s'):
+                cambionremaining.remove(part)
+        cambionremaining = cambionremaining.join(' ')
+        cambion = "%s to %s" % (cambionremaining, cambionactive)
         cache.set("wf_cambion_cached", str(cambion), ttl_seconds=60)
 
         vallis = rep.json()["vallisCycle"]["shortString"]
