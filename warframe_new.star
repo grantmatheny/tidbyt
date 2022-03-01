@@ -3,7 +3,7 @@ load("http.star", "http")
 load("cache.star", "cache")
 
 WF_STATUS_URL = "https://api.warframestat.us/pc"
-REFRESH_CACHE = false
+REFRESH_CACHE = False
 
 def main():
     wf_cetus_cached = cache.get("cetus")
@@ -14,27 +14,27 @@ def main():
         print("Hit! Displaying cached data.")
         cetus = wf_cetus_cached
     else:
-        REFRESH_CACHE = true
+        REFRESH_CACHE = True
 
     if wf_earth_cached != None:
         print("Hit! Displaying cached data.")
         earth = wf_earth_cached
     else:
-        REFRESH_CACHE = true
+        REFRESH_CACHE = True
 
     if wf_cambion_cached != None:
         print("Hit! Displaying cached data.")
         cambion = wf_cambion_cached
     else:
-        REFRESH_CACHE = true
+        REFRESH_CACHE = True
 
     if wf_vallis_cached != None:
         print("Hit! Displaying cached data.")
         vallis = wf_vallis_cached
     else:
-        REFRESH_CACHE = true    
+        REFRESH_CACHE = True    
     
-    if REFRESH_CACHE == true:
+    if REFRESH_CACHE == True:
         rep = http.get(WF_STATUS_URL)
         if rep.status_code != 200:
             fail("Warframe request failed with status %d", rep.status_code)
