@@ -44,12 +44,12 @@ def main():
 
         earthactive = rep.json()["earthCycle"]["state"].title()
         if earthactive == "Night":
-            earthactive == "Day"
+            earthactive = "Day"
         else:
-            earthactive == "Night"
+            earthactive = "Night"
         earthremaining = rep.json()["earthCycle"]["timeLeft"].split()
         for part in earthremaining:
-            if part is search('s'):
+            if "s" in part:
                 earthremaining.remove(part)
         earthremaining = earthremaining.join(' ')
         earth = "%s to %s" % (earthremaining, earthactive)
@@ -57,12 +57,12 @@ def main():
 
         cambionactive = rep.json()["cambionCycle"]["active"].title()
         if cambionactive == "Fass":
-            cambionactive == "Vome"
+            cambionactive = "Vome"
         else:
-            cambionactive == "Fass"
+            cambionactive = "Fass"
         cambionremaining = rep.json()["cambionCycle"]["timeLeft"].split()
         for part in cambionremaining:
-            if part is search('s'):
+            if "s" in part:
                 cambionremaining.remove(part)
         cambionremaining = cambionremaining.join(' ')
         cambion = "%s to %s" % (cambionremaining, cambionactive)
