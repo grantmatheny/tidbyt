@@ -76,10 +76,10 @@ def main():
     return render.Root(
        child = render.Column(
                 children = [
-                    render.Text("C: %s" % cetus),
-                    render.Text("E: %s" % earth),
-                    render.Text("D: %s" % cambion),
-                    render.Text("V: %s" % vallis),
+                    render.Text("C:%s" % cetus),
+                    render.Text("E:%s" % earth),
+                    render.Text("D:%s" % cambion),
+                    render.Text("V:%s" % vallis),
                 ],
                 ),
     )
