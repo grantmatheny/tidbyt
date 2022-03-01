@@ -34,7 +34,7 @@ def main():
     else:
         REFRESH_CACHE = true    
     
-    if REFRESH_CACHE = true:
+    if REFRESH_CACHE == true:
         rep = http.get(WF_STATUS_URL)
         if rep.status_code != 200:
             fail("Warframe request failed with status %d", rep.status_code)
