@@ -52,7 +52,7 @@ def main():
             if "s" in part:
                 part_to_remove = part
         earthremaining.remove(part)
-        earthremaining = earthremaining.join(' ')
+        earthremaining = ' '.join(earthremaining)
         earth = "%s to %s" % (earthremaining, earthactive)
         cache.set("wf_earth_cached", str(earth), ttl_seconds=60)
 
@@ -66,7 +66,7 @@ def main():
             if "s" in part:
                 part_to_remove = part
         cambionremaining.remove(part_to_remove)
-        cambionremaining = cambionremaining.join(' ')
+        cambionremaining = ' '.join(cambionremaining)
         cambion = "%s to %s" % (cambionremaining, cambionactive)
         cache.set("wf_cambion_cached", str(cambion), ttl_seconds=60)
 
