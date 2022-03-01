@@ -81,6 +81,5 @@ def main():
                     render.Text("D: %s" % cambion),
                     render.Text("V: %s" % vallis),
                 ],
-            ),
-       ),
+                ),
     )
