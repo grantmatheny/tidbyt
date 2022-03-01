@@ -74,14 +74,7 @@ def main():
         cache.set("wf_vallis_cached", str(vallis), ttl_seconds=60)
 
     return render.Root(
-       delay = 100,
-       child = render.Marquee(
-            width=64,
-            height=32,
-            offset_start=0,
-            offset_end=0,
-            scroll_direction="horizontal",
-            child = render.Column(
+       child = render.Column(
                 children = [
                     render.Text("C: %s" % cetus),
                     render.Text("E: %s" % earth),
