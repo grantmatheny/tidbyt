@@ -42,12 +42,12 @@ def main():
         cetus = rep.json()["cetusCycle"]["shortString"]
         cache.set("wf_cetus_cached", str(cetus), ttl_seconds=60)
 
-        earthactive = rep.json()["earthCycle"]["state"]
+        earthactive = rep.json()["earthCycle"]["state"].title()
         earthremaining = rep.json()["earthCycle"]["timeLeft"]
         earth = "%s of %s" % (earthremaining, earthactive)
         cache.set("wf_earth_cached", str(earth), ttl_seconds=60)
 
-        cambionactive = rep.json()["cambionCycle"]["active"]
+        cambionactive = rep.json()["cambionCycle"]["active"].title()
         cambionremaining = rep.json()["cambionCycle"]["timeLeft"]
         cambion = "%s of %s" % (cambionremaining, cambionactive)
         cache.set("wf_cambion_cached", str(cambion), ttl_seconds=60)
