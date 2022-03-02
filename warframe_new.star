@@ -39,14 +39,14 @@ def main():
         if rep.status_code != 200:
             fail("Warframe request failed with status %d", rep.status_code)
 
-        cetus = rep.json()["cetusCycle"]["shortString"].replace(' to ', '>')
+        cetus = rep.json()["cetusCycle"]["shortString"].replace(' to ', '>').replace('Night','Nite')
         cache.set("wf_cetus_cached", str(cetus), ttl_seconds=60)
 
         earthactive = rep.json()["earthCycle"]["state"].title()
         if earthactive == "Night":
             earthactive = "Day"
         else:
-            earthactive = "Night"
+            earthactive = "Nite"
         earthremaining = rep.json()["earthCycle"]["timeLeft"].split()
         for part in earthremaining:
             if "s" in part:
