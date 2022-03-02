@@ -1,0 +1,4 @@
+5 * * * * cd /home/pi/tidbyt && git pull origin main
+* * * * * /usr/local/bin/pixlet render /home/pi/tidbyt/warframe_new.star && /usr/local/bin/pixlet push --api-token $API_TOKEN --installation-id "warframe" $API_NAME /home/pi/tidbyt/warframe_new.webp 
+5 4 * * 1 apt-get dist-upgrade -y
+5 5 * * * needrestart -r a
