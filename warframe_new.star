@@ -39,7 +39,7 @@ def main():
         if rep.status_code != 200:
             fail("Warframe request failed with status %d", rep.status_code)
 
-        cetus = rep.json()["cetusCycle"]["shortString"]
+        cetus = rep.json()["cetusCycle"]["shortString"].replace(' to ', '>')
         cache.set("wf_cetus_cached", str(cetus), ttl_seconds=60)
 
         earthactive = rep.json()["earthCycle"]["state"].title()
@@ -53,7 +53,7 @@ def main():
                 part_to_remove = part
         earthremaining.remove(part)
         earthremaining = ' '.join(earthremaining)
-        earth = "%s to %s" % (earthremaining, earthactive)
+        earth = "%s>%s" % (earthremaining, earthactive)
         cache.set("wf_earth_cached", str(earth), ttl_seconds=60)
 
         cambionactive = rep.json()["cambionCycle"]["active"].title()
@@ -67,19 +67,19 @@ def main():
                 part_to_remove = part
         cambionremaining.remove(part_to_remove)
         cambionremaining = ' '.join(cambionremaining)
-        cambion = "%s to %s" % (cambionremaining, cambionactive)
+        cambion = "%s>%s" % (cambionremaining, cambionactive)
         cache.set("wf_cambion_cached", str(cambion), ttl_seconds=60)
 
-        vallis = rep.json()["vallisCycle"]["shortString"]
+        vallis = rep.json()["vallisCycle"]["shortString"].replace(' to ', '>')
         cache.set("wf_vallis_cached", str(vallis), ttl_seconds=60)
 
     return render.Root(
        child = render.Column(
                 children = [
-                    render.Text("C:%s" % cetus),
-                    render.Text("E:%s" % earth),
-                    render.Text("D:%s" % cambion),
-                    render.Text("V:%s" % vallis),
+                    render.Text("C: %s" % cetus),
+                    render.Text("E: %s" % earth),
+                    render.Text("D: %s" % cambion),
+                    render.Text("V: %s" % vallis),
                 ],
                 ),
     )
