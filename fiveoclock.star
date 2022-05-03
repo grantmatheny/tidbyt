@@ -565,7 +565,7 @@ def main():
 
         
     return render.Root(
-        delay = 100,
+        delay = 50,
         child = render.Column(
             children = [
                 render.Column(
