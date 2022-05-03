@@ -536,7 +536,7 @@ def main():
     cache_location = cache.get("fiveoclocksomewhere")
     if cache_location != None and int(time.now().minute) > 10:
         location = cache_location
-        print ("cache hit")
+        print ("cache hit %s" % cache_location)
     else:
         drinking_timezones = []
 
@@ -546,13 +546,10 @@ def main():
             if hour == 17:
                 drinking_timezones.append(timezone)
         
-        print(drinking_timezones)
-
         # construct random number request URL
         max_timezones = str(len(drinking_timezones))
         random_url = "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=%s&count=1" % max_timezones
         random_index = http.get(random_url)
-        print(random_index.json())
         if random_index.status_code != 200:
             # if API fails, use index 0. Very random guaranteed.
             print("api_failure")
@@ -560,8 +557,7 @@ def main():
         else:
             index = int(random_index.json()[0])
             location = drinking_timezones[index]
-            print(location)
-            cache.set("fiveoclocksomewhere", timezone, ttl_seconds = 240)
+            cache.set("fiveoclocksomewhere", location, ttl_seconds = 240)
     
     if "/" in location:
         split_location = location.split('/')
