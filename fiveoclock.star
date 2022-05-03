@@ -11,7 +11,7 @@ load("render.star", "render")
 load("cache.star", "cache")
 load("time.star", "time")
 load("encoding/base64.star", "base64")
-load("http.star", "http")
+load("random.star", "random")
 
 MARTINI_ICON = base64.decode("""
 iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAIbEAACGxAAGFqWwEAAACRElEQVRIx+3U30tTYRwG8IVEEeVFBYIXQX+AN0V3EUQXEd0VQRhe5EVYQoEELQvBENqshGKQmpm/cnVUSqSmc0HBypluKz1Oc1s/NHOG0LLtOLXO0/PKKU6grdwZdNELn7Ed3vf5nr3f8x6TKcVxbOumHFpvSsdgcDbNUn66CtgoRGv/amF/IJxJO+ggHSczlVIZXaDi9mZ7EYPnbEUnS/g7yxsIJw3Noks0QirhdyoK8lF+NFd/bYLqKGfJAp7B0VLf8GtEv8QxOf0JofEIBoLv4OU1fXCDqx4XW87i1IFt6PO+RPh9ZHH+TFzh9yn0ykHXkgUsVc2ra9s6pWc+GTMxBaqqQgzxOb/wFYm5eSiJBKaiE4jNfsaP8Y3zYkoCcvAtJMcTr63p/uZlt4lFMuhmpb0DnoFXkMPjCI5N4s2HjxiLTMMX8qP2UTlsjhKUtRbC8bxr8R+2Ot2wVtvdXJuZtMGctIquXK1vw+N++Zft8cgjOGHdi7xrO3GuqQA9gwE0trvA+d207o+fIt6NKHT+cs1ddLq9Pws4H3bhuvk0+oaCYM9wQ3ogwjtozYqecy4sZDFVbIEoUFl8Br0vAnD7h8G9FuGS6F1Kh4kBubRQd8+Jp74hdPf4UXGrRYQ3iJ4ZcmIZtJ8UgqZK9MrQ1wIDj2jhoqHGv3cYulsr0JiWF9v/Av9EgX1aAclSfdvQ4I1kobjuHDhpe6rBgpmiumA9VTvNG1ZaIEO7U3WZAoKPthixRbvoEOXRYdpD2daaO0nXfwd97j9iHjgVlQAAAABJRU5ErkJggg==
@@ -533,31 +533,16 @@ TIMEZONES = [
 ]
 
 def main():
-    cache_location = cache.get("fiveoclocksomewhere")
-    if cache_location != None and int(time.now().minute) > 10:
-        location = cache_location
-        print ("cache hit %s" % cache_location)
-    else:
-        drinking_timezones = []
+    drinking_timezones = []
 
-        # construct list of timezones in which it is 5 o'clock
-        for timezone in TIMEZONES:
-            hour = time.now().in_location(timezone).hour
-            if hour == 17:
-                drinking_timezones.append(timezone)
-        
-        # construct random number request URL
-        max_timezones = str(len(drinking_timezones))
-        random_url = "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=%s&count=1" % max_timezones
-        random_index = http.get(random_url)
-        if random_index.status_code != 200:
-            # if API fails, use index 0. Very random guaranteed.
-            print("api_failure")
-            random_index = 0
-        else:
-            index = int(random_index.json()[0])
-            location = drinking_timezones[index]
-            cache.set("fiveoclocksomewhere", location, ttl_seconds = 240)
+    # construct list of timezones in which it is 5 o'clock
+    for timezone in TIMEZONES:
+        hour = time.now().in_location(timezone).hour
+        if hour == 17:
+            drinking_timezones.append(timezone)
+    
+    # construct random number request URL
+    location = drinking_timezones[random.number(0, len(drinking_timezones))]
     
     if "/" in location:
         split_location = location.split('/')
