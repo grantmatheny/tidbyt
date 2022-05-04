@@ -1,11 +1,9 @@
 """
-Applet: Warframe Cycles
-Summary: Time in Warframe open areas
-Description: Tells you the cycle that's active in each of the Warframe open areas and in Earth missions.
+Applet: Five Somewhere
+Summary: Where it is 5 o'clock
+Description: Displays a random timezone where it's currently in the 5 o'clock hour.
 Author: grantmatheny
 """
-
-# https://pkg.go.dev/go.starlark.net/lib/time
 
 load("render.star", "render")
 load("cache.star", "cache")
@@ -75,7 +73,6 @@ TIMEZONES = [
     "America/Araguaina",
     "America/Argentina/Buenos_Aires",
     "America/Argentina/Catamarca",
-    "America/Argentina/ComodRivadavia",
     "America/Argentina/Cordoba",
     "America/Argentina/Jujuy",
     "America/Argentina/La_Rioja",
@@ -156,7 +153,6 @@ TIMEZONES = [
     "America/Juneau",
     "America/Kentucky/Louisville",
     "America/Kentucky/Monticello",
-    "America/Knox_IN",
     "America/Kralendijk",
     "America/La_Paz",
     "America/Lima",
@@ -387,9 +383,6 @@ TIMEZONES = [
     "Canada/Yukon",
     "Chile/Continental",
     "Chile/EasterIsland",
-    "Cuba",
-    "Egypt",
-    "Eire",
     "Europe/Amsterdam",
     "Europe/Andorra",
     "Europe/Astrakhan",
@@ -414,6 +407,7 @@ TIMEZONES = [
     "Europe/Kirov",
     "Europe/Lisbon",
     "Europe/Ljubljana",
+    "Europe/London",
     "Europe/Luxembourg",
     "Europe/Madrid",
     "Europe/Malta",
@@ -445,12 +439,7 @@ TIMEZONES = [
     "Europe/Warsaw",
     "Europe/Zagreb",
     "Europe/Zaporozhye",
-    "Factory",
-    "GB",
-    "GB-Eire",
     "Greenwich",
-    "Hongkong",
-    "Iceland",
     "Indian/Antananarivo",
     "Indian/Chagos",
     "Indian/Christmas",
@@ -461,18 +450,10 @@ TIMEZONES = [
     "Indian/Maldives",
     "Indian/Mauritius",
     "Indian/Mayotte",
-    "Iran",
-    "Israel",
-    "Jamaica",
-    "Japan",
-    "Kwajalein",
-    "Libya",
     "Mexico/BajaNorte",
     "Mexico/BajaSur",
     "Mexico/General",
     "Navajo",
-    "NZ",
-    "NZ-CHAT",
     "Pacific/Apia",
     "Pacific/Bougainville",
     "Pacific/Chatham",
@@ -512,12 +493,6 @@ TIMEZONES = [
     "Pacific/Wake",
     "Pacific/Wallis",
     "Pacific/Yap",
-    "Poland",
-    "Portugal",
-    "PST8PDT",
-    "Singapore",
-    "Turkey",
-    "Universal",
     "US/Alaska",
     "US/Aleutian",
     "US/Arizona",
@@ -530,6 +505,7 @@ TIMEZONES = [
     "US/Mountain",
     "US/Pacific",
     "US/Samoa",
+    "UTC",
 ]
 
 def main():
@@ -540,15 +516,31 @@ def main():
         hour = time.now().in_location(timezone).hour
         if hour == 17:
             drinking_timezones.append(timezone)
-    
-    # construct random number request URL
-    location = drinking_timezones[random.number(0, len(drinking_timezones))]
-    
-    if "/" in location:
-        split_location = location.split('/')
-        location = split_location[1] + ", " + split_location[0]
 
-        
+    # get random timezone from list of drinking timezones
+    location = drinking_timezones[random.number(0, len(drinking_timezones) - 1)]
+
+    if "/" in location:
+        split_location = location.split("/")
+        if len(split_location) == 2:
+            location = split_location[1] + ", " + split_location[0]
+        if len(split_location) == 3:
+            location = split_location[2] + ", " + split_location[1]
+
+    # Display fixes for special cases
+    location = location.replace("_", " ")
+    location = location.replace("St ", "St. ")
+    location = location.replace("East-", "")  # for US/East-Indiana
+    location = location.replace("East, Brazil", "East Brazil")  # for Brazil/East
+    location = location.replace("West, Brazil", "West Brazil")  # for Brazil/West
+    location = location.replace("General, Mexico", "Mexico")  # for Mexico/General
+    location = location.replace("BajaNorte", "Baja Norte")  # for Mexico/BajaNorte
+    location = location.replace("BajaSur", "Baja Sur")  # for Mexico/BajaSur
+    location = location.replace("Navajo", "Navajo Nation")  # for Navajo
+    location = location.replace("DumontDUrville", "Dumont-d'Urville")  # for Antarctica/DumontDUrville
+    location = location.replace("EasterIsland", "Easter Island")  # for Chile/EasterIsland
+    print(location)
+
     return render.Root(
         delay = 50,
         child = render.Column(
@@ -563,16 +555,16 @@ def main():
                                     children = [
                                         render.Text(
                                             content = " It's five",
-                                            color = "#FFA500",
+                                            color = "#fA0",
                                         ),
                                         render.Text(
                                             content = " o'clock",
-                                            color = "#FFA500",
-                                        ),      
+                                            color = "#fA0",
+                                        ),
                                         render.Text(
                                             content = " in",
-                                            color = "#FFA500",
-                                        ),                                                                      
+                                            color = "#fA0",
+                                        ),
                                     ],
                                 ),
                                 render.Image(
@@ -584,9 +576,8 @@ def main():
                 ),
                 render.Marquee(
                     width = 64,
-                    child = render.Text(location, color = "#0099FF"),
+                    child = render.Text(location, color = "#09f"),
                 ),
             ],
         ),
     )
-
